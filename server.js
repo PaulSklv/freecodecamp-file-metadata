@@ -4,17 +4,17 @@ var express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-let storage = {
-  storage: multer.diskStorage({
-    destination: (req, file, next) => {
-      next(null, '/uploads');
-    },
-    filename: (req, file, next) => {
-      next(null, file.fieldname);
-    }
-  })
-};
-
+// let storage = {
+//   storage: multer.diskStorage({
+//     destination: (req, file, next) => {
+//       next(null, './uploads');
+//     },
+//     filename: (req, file, next) => {
+//       console.log(file)
+//     }
+//   })
+// };
+let storage = multer.memoryStorage();
 let upload = multer({ storage: storage })
 // require and use "multer"...
 
@@ -26,8 +26,12 @@ app.use(bodyParser.json());
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
-app.route("/api/fileanalyse").post(upload.single('avatar'), (req, res) => {
-  res.send(req.file);
+app.route("/api/fileanalyse").post(upload.single('upfile'), (req, res) => {
+  res.json({
+    name: req.fielname,
+    
+    size: req.size
+  });
 })
 
 
