@@ -4,7 +4,11 @@ var express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-let upload = multer({dest: "uploads/"});
+let upload = {
+  storage: multer.diskStorage({
+    
+  })
+}
 
 // require and use "multer"...
 
