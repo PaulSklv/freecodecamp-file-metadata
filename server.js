@@ -4,12 +4,18 @@ var express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-let upload = {
+let storage = {
   storage: multer.diskStorage({
-    
+    destination: (req, file, next) => {
+      next(null, '/uploads');
+    },
+    filename: (req, file, next) => {
+      next(null, file.fieldname);
+    }
   })
-}
+};
 
+let upload = multer({ storage: storage })
 // require and use "multer"...
 
 var app = express();
@@ -21,7 +27,7 @@ app.use(bodyParser.json());
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.route("/api/fileanalyse").post(upload.single('avatar'), (req, res) => {
-  res.send(req.file.filename);
+  res.send(req.file);
 })
 
 
